@@ -1,6 +1,10 @@
 import re
 import urllib.robotparser
 
+import colorama
+from colorama import Fore, Back, Style
+colorama.init()
+
 class Robots:
     def __init__(self, url, user_agent):
         self.raw_url = url
@@ -29,15 +33,15 @@ class Robots:
 
     def url_can_fetch(self) -> str:
         if self.rp.can_fetch(self.user_agent, self.raw_url) is True:
-            return 'Allow'
+            return Back.BLUE + 'Allow' + Style.RESET_ALL
         else:
-            return 'Disallow'
+            return Back.RED + 'Disallow' + Style.RESET_ALL
 
     def url_crawl_delay(self) -> str:
         if self.rp.crawl_delay(self.user_agent) is not None:
-            return str(self.rp.crawl_delay(self.user_agent)) + 's'
+            return Back.MAGENTA + str(self.rp.crawl_delay(self.user_agent)) + 's' + Style.RESET_ALL
         else:
-            return 'None (1s wait recommended)'
+            return Back.MAGENTA + 'None' + Style.RESET_ALL + '(1s wait recommended)'
 
 def main():
     url = input('URL Here >>> ')
@@ -49,10 +53,10 @@ def main():
     robots.txt URL -> {robots.robots_url}
     -------------------------------------
     Can fetch 
-        user-agent: {robots.user_agent} -> {robots.url_can_fetch()}
+        user-agent: {Fore.GREEN}{robots.user_agent}{Style.RESET_ALL} -> {robots.url_can_fetch()}
     -------------------------------------
     Crawl delay
-        user-agent: {robots.user_agent} -> {robots.url_crawl_delay()}
+        user-agent: {Fore.GREEN}{robots.user_agent}{Style.RESET_ALL} -> {robots.url_crawl_delay()}
     """)
 
 if __name__ == '__main__':
